@@ -5,27 +5,33 @@ import java.util.List;
 
 import javax.swing.text.StyledEditorKit.BoldAction;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sathya.collabration.model.Blog;
+import com.sathya.CollaborationBackEnd.DaoImpl.BlogDaoImpl;
+import com.sathya.CollaborationBackEnd.model.Blog;
+
+
 
 @RestController
 public class BlogController
 {
-@RequestMapping("/getblogs")
-public List<Blog> addBlogs()
+	@Autowired
+	BlogDaoImpl blogDaoImpl;
+@PostMapping("/addblog")
+public void addblogs(@RequestBody Blog blog)
 {
-	List< Blog> blogList = new ArrayList<Blog>();
-	Blog blog=new Blog();
-	Blog blog2 =new Blog();
-	blog.setBlogName("abc");
-	blog.setBlogOwner("a");
-	blog.setBlogTitle("xyz");
-	blog2.setBlogName("sk");
-	blog2.setBlogOwner("s");
-	blog2.setBlogTitle("a");
-	return blogList;
+	blogDaoImpl.addBlog(blog);
 	
+}
+@GetMapping("/getblogs")
+public List<Blog> getBlogs()
+{
+List<Blog>blogList=	blogDaoImpl.getBlogsList();
+	return blogList;
 }
 }
